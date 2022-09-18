@@ -1,0 +1,31 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.2.32630.192
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "FantasyUniverseNation", "FantasyUniverseNation.vcxproj", "{D1FE5CE2-1E8B-43EB-9049-FC4E850E5059}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|x64 = Debug|x64
+		Debug|x86 = Debug|x86
+		Release|x64 = Release|x64
+		Release|x86 = Release|x86
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{D1FE5CE2-1E8B-43EB-9049-FC4E850E5059}.Debug|x64.ActiveCfg = Debug|x64
+		{D1FE5CE2-1E8B-43EB-9049-FC4E850E5059}.Debug|x64.Build.0 = Debug|x64
+		{D1FE5CE2-1E8B-43EB-9049-FC4E850E5059}.Debug|x86.ActiveCfg = Debug|Win32
+		{D1FE5CE2-1E8B-43EB-9049-FC4E850E5059}.Debug|x86.Build.0 = Debug|Win32
+		{D1FE5CE2-1E8B-43EB-9049-FC4E850E5059}.Release|x64.ActiveCfg = Release|x64
+		{D1FE5CE2-1E8B-43EB-9049-FC4E850E5059}.Release|x64.Build.0 = Release|x64
+		{D1FE5CE2-1E8B-43EB-9049-FC4E850E5059}.Release|x86.ActiveCfg = Release|Win32
+		{D1FE5CE2-1E8B-43EB-9049-FC4E850E5059}.Release|x86.Build.0 = Release|Win32
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {4A212356-C7A5-4AC8-9EE0-5A3D3E28FAA3}
+	EndGlobalSection
+EndGlobal
