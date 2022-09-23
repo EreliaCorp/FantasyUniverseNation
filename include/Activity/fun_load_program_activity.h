@@ -4,10 +4,6 @@
 
 #include "structure/fun_context.h"
 
-#include "widget/menu/fun_main_menu.h"
-#include "widget/menu/fun_lobby_menu.h"
-#include "widget/menu/fun_game_menu.h"
-
 namespace fun
 {
 	namespace Activity

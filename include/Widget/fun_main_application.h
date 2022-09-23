@@ -6,6 +6,11 @@
 #include "Widget/Manager/fun_activity_manager.h"
 #include "Activity/fun_load_program_activity.h"
 
+#include "widget/menu/fun_main_menu.h"
+#include "widget/menu/fun_lobby_menu.h"
+#include "widget/menu/fun_host_menu.h"
+#include "widget/menu/fun_game_menu.h"
+
 namespace fun
 {
 	class MainApplication : public jgl::Widget
@@ -21,6 +26,7 @@ namespace fun
 		{
 			fun::Menu::MainMenu::instance()->set_geometry(0, _area);
 			fun::Menu::LobbyMenu::instance()->set_geometry(0, _area);
+			fun::Menu::HostMenu::instance()->set_geometry(0, _area);
 			fun::Menu::GameMenu::instance()->set_geometry(0, _area);
 		}
 
@@ -45,6 +51,9 @@ namespace fun
 			fun::Menu::LobbyMenu::instanciate(this);
 			fun::Menu::LobbyMenu::instance()->activate();
 
+			fun::Menu::HostMenu::instanciate(this);
+			fun::Menu::HostMenu::instance()->activate();
+
 			fun::Menu::GameMenu::instanciate(this);
 			fun::Menu::GameMenu::instance()->activate();
 
@@ -57,14 +66,58 @@ namespace fun
 					jgl::cout << "Activating menu [fun::Menu::MainMenu]" << jgl::endl;
 					active_menu(fun::Menu::MainMenu::instance());
 				});
+
 			fun::Publisher::subscribe(fun::Event::GoLobbyMenu, [&]() {
 					jgl::cout << "Activating menu [fun::Menu::LobbyMenu]" << jgl::endl;
 					active_menu(fun::Menu::LobbyMenu::instance());
+					fun::Publisher::notify(fun::Event::StartClient);
 				});
+
+			fun::Publisher::subscribe(fun::Event::GoHostMenu, [&]() {
+					jgl::cout << "Activating menu [fun::Menu::HostMenu]" << jgl::endl;
+					active_menu(fun::Menu::HostMenu::instance());
+					fun::Publisher::notify(fun::Event::StartServer);
+				});
+
 			fun::Publisher::subscribe(fun::Event::GoGameMenu, [&]() {
 					jgl::cout << "Activating menu [fun::Menu::GameMenu]" << jgl::endl;
 					active_menu(fun::Menu::GameMenu::instance());
 				});
+
+			fun::Publisher::subscribe(fun::Event::StartClient, [&]() {
+					jgl::cout << "Starting the server manager" << jgl::endl;
+					try
+					{
+						if (fun::Network::ClientManager::instance() == nullptr)
+							fun::Network::ClientManager::instanciate(this);
+
+						fun::Network::ClientManager::instance()->activate();
+
+						fun::Network::ClientManager::instance()->start(fun::Structure::Context::instance()->address, SERVER_PORT);
+					}
+					catch (...)
+					{
+						fun::Publisher::notify(fun::Event::GoMainMenu);
+					}
+				});
+
+			fun::Publisher::subscribe(fun::Event::StartServer, [&]() {
+					jgl::cout << "Starting the client manager" << jgl::endl;
+					try
+					{
+						if (fun::Network::ServerManager::instance() == nullptr)
+							fun::Network::ServerManager::instanciate(this);
+
+						fun::Network::ServerManager::instance()->activate();
+
+						fun::Network::ServerManager::instance()->start(SERVER_PORT);
+					}
+					catch (...)
+					{
+						fun::Publisher::notify(fun::Event::GoMainMenu);
+					}
+				});
+
 			fun::Publisher::notify(fun::Event::LoadProgram);
 
 

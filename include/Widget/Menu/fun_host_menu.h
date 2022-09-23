@@ -1,15 +1,15 @@
 #pragma once
 
-#include "structure/fun_context.h"
+#include "Utils/fun_network.h"
 #include "widget/abstract/fun_menu.h"
 
 namespace fun
 {
 	namespace Menu
 	{
-		class GameMenu : public fun::Abstract::Menu, public jgl::Singleton_widget<GameMenu>
+		class HostMenu : public fun::Abstract::Menu, public jgl::Singleton_widget<HostMenu>
 		{
-			friend class jgl::Singleton_widget<GameMenu>;
+			friend class jgl::Singleton_widget<HostMenu>;
 
 		private:
 			void _render()
@@ -32,7 +32,7 @@ namespace fun
 				return (false);
 			}
 
-			GameMenu(jgl::Widget* p_parent) : Menu(p_parent)
+			HostMenu(jgl::Widget* p_parent) : Menu(p_parent)
 			{
 
 			}
@@ -46,7 +46,7 @@ namespace fun
 
 			void on_unfocus()
 			{
-
+				
 			}
 		};
 	}

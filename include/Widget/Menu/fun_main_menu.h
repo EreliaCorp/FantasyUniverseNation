@@ -80,7 +80,7 @@ namespace fun
 				_username_label->set_depth(_depth + 4);
 				_username_label->activate();
 
-				_username_entry = new fun::Widget::Overload::TextEntry("ceci est un test", _background);
+				_username_entry = new fun::Widget::Overload::TextEntry("", _background);
 				_username_entry->set_depth(_depth + 2);
 				_username_entry->activate();
 
@@ -88,15 +88,24 @@ namespace fun
 				_address_label->set_depth(_depth + 4);
 				_address_label->activate();
 
-				_address_entry = new fun::Widget::Overload::TextEntry("ceci est un test", _background);
+				_address_entry = new fun::Widget::Overload::TextEntry("", _background);
 				_address_entry->set_depth(_depth + 2);
 				_address_entry->activate();
 
-				_connect_button = new fun::Widget::Overload::Button("Connect", [&](jgl::Data_contener& p_param) {}, _background);
+				_connect_button = new fun::Widget::Overload::Button("Connect", [&](jgl::Data_contener& p_param) {
+						if (_username_entry->label().text() != "" && _address_entry->label().text() != "")
+						{
+							fun::Structure::Context::instance()->username = _username_entry->label().text();
+							fun::Structure::Context::instance()->address = _address_entry->label().text();
+							fun::Publisher::notify(fun::Event::GoLobbyMenu);
+						}
+					}, _background);
 				_connect_button->set_depth(_depth + 2);
 				_connect_button->activate();
 
-				_host_button = new fun::Widget::Overload::Button("Host", [&](jgl::Data_contener& p_param) {}, _background);
+				_host_button = new fun::Widget::Overload::Button("Host", [&](jgl::Data_contener& p_param) {
+						fun::Publisher::notify(fun::Event::GoHostMenu);
+					}, _background);
 				_host_button->set_depth(_depth + 2);
 				_host_button->activate();
 			}

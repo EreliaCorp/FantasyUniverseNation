@@ -65,5 +65,8 @@
     <ClInclude Include="include\Structure\fun_context.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="include\Widget\Menu\fun_host_menu.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>

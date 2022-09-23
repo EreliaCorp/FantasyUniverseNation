@@ -10,7 +10,10 @@ namespace fun
 		ClearContextGlobal,
 		GoMainMenu,
 		GoLobbyMenu,
-		GoGameMenu
+		GoHostMenu,
+		GoGameMenu,
+		StartServer,
+		StartClient,
 	};
 
 	class Publisher : public jgl::Singleton<jgl::Publisher<Event>>
@@ -29,6 +32,8 @@ namespace fun
 				return ("GoMainMenu");
 			case fun::Event::GoLobbyMenu:
 				return ("GoLobbyMenu");
+			case fun::Event::GoHostMenu:
+				return ("GoHostMenu");
 			case fun::Event::GoGameMenu:
 				return ("GoGameMenu");
 			default :
