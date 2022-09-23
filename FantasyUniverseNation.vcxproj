@@ -20,30 +20,23 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\main.cpp" />
-    <ClCompile Include="src\Widget\MainApplication\fun_main_application.cpp" />
-    <ClCompile Include="src\Widget\Manager\fun_board_manager.cpp" />
-    <ClCompile Include="src\Widget\Manager\fun_player_manager.cpp" />
-    <ClCompile Include="src\Widget\Menu\fun_main_menu.cpp" />
-    <ClCompile Include="src\Widget\Widget\fun_board_renderer.cpp" />
-    <ClCompile Include="src\Widget\Widget\fun_button.cpp" />
-    <ClCompile Include="src\Widget\Widget\fun_card_renderer.cpp" />
-    <ClCompile Include="src\Widget\Widget\fun_frame.cpp" />
-    <ClCompile Include="src\Widget\Widget\fun_text_entry.cpp" />
-    <ClCompile Include="src\Widget\Widget\fun_text_label.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="include\Structure\fun_card.h" />
+    <ClInclude Include="include\Activity\fun_load_program_activity.h" />
+    <ClInclude Include="include\Structure\fun_context.h" />
+    <ClInclude Include="include\Utils\fun_event_manager.h" />
     <ClInclude Include="include\Utils\fun_network.h" />
-    <ClInclude Include="include\Widget\MainApplication\fun_main_application.h" />
-    <ClInclude Include="include\Widget\Manager\fun_board_manager.h" />
-    <ClInclude Include="include\Widget\Manager\fun_player_manager.h" />
+    <ClInclude Include="include\Widget\Abstract\fun_manager.h" />
+    <ClInclude Include="include\Widget\Abstract\fun_menu.h" />
+    <ClInclude Include="include\Widget\fun_main_application.h" />
+    <ClInclude Include="include\Widget\Manager\fun_activity_manager.h" />
+    <ClInclude Include="include\Widget\Menu\fun_game_menu.h" />
+    <ClInclude Include="include\Widget\Menu\fun_lobby_menu.h" />
     <ClInclude Include="include\Widget\Menu\fun_main_menu.h" />
-    <ClInclude Include="include\Widget\Widget\fun_board_renderer.h" />
-    <ClInclude Include="include\Widget\Widget\fun_button.h" />
-    <ClInclude Include="include\Widget\Widget\fun_card_renderer.h" />
-    <ClInclude Include="include\Widget\Widget\fun_frame.h" />
-    <ClInclude Include="include\Widget\Widget\fun_text_entry.h" />
-    <ClInclude Include="include\Widget\Widget\fun_text_label.h" />
+    <ClInclude Include="include\Widget\Overload\fun_button.h" />
+    <ClInclude Include="include\Widget\Overload\fun_frame.h" />
+    <ClInclude Include="include\Widget\Overload\fun_text_entry.h" />
+    <ClInclude Include="include\Widget\Overload\fun_text_label.h" />
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <VCProjectVersion>16.0</VCProjectVersion>

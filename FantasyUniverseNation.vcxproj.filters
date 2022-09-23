@@ -18,72 +18,51 @@
     <ClCompile Include="src\main.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="src\Widget\MainApplication\fun_main_application.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="src\Widget\Manager\fun_board_manager.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="src\Widget\Manager\fun_player_manager.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="src\Widget\Menu\fun_main_menu.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="src\Widget\Widget\fun_board_renderer.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="src\Widget\Widget\fun_button.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="src\Widget\Widget\fun_card_renderer.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="src\Widget\Widget\fun_frame.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="src\Widget\Widget\fun_text_entry.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="src\Widget\Widget\fun_text_label.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="include\Structure\fun_card.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="include\Utils\fun_network.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="include\Widget\MainApplication\fun_main_application.h">
+    <ClInclude Include="include\Widget\Overload\fun_button.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="include\Widget\Manager\fun_board_manager.h">
+    <ClInclude Include="include\Widget\Overload\fun_frame.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="include\Widget\Manager\fun_player_manager.h">
+    <ClInclude Include="include\Widget\Overload\fun_text_entry.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="include\Widget\Overload\fun_text_label.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="include\Utils\fun_event_manager.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="include\Widget\Abstract\fun_manager.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="include\Widget\Manager\fun_activity_manager.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="include\Widget\fun_main_application.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="include\Activity\fun_load_program_activity.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="include\Widget\Abstract\fun_menu.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="include\Widget\Menu\fun_main_menu.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="include\Widget\Widget\fun_board_renderer.h">
+    <ClInclude Include="include\Widget\Menu\fun_lobby_menu.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="include\Widget\Widget\fun_button.h">
+    <ClInclude Include="include\Widget\Menu\fun_game_menu.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="include\Widget\Widget\fun_card_renderer.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="include\Widget\Widget\fun_frame.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="include\Widget\Widget\fun_text_entry.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="include\Widget\Widget\fun_text_label.h">
+    <ClInclude Include="include\Structure\fun_context.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

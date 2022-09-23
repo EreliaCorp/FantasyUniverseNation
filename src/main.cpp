@@ -1,6 +1,6 @@
 #include "jgl.h"
 
-#include "widget/MainApplication/fun_main_application.h"
+#include "widget/fun_main_application.h"
 
 int main()
 {
@@ -8,9 +8,9 @@ int main()
 	app.set_default_font("ressource/font/karma suture.ttf");
 	app.active_multithread();
 
-	fun::MainApplication::instanciate(nullptr);
-	fun::MainApplication::instance()->set_geometry(0, app.size());
-	fun::MainApplication::instance()->activate();
+	fun::MainApplication main_app = fun::MainApplication(nullptr);
+	main_app.set_geometry(0, app.size());
+	main_app.activate();
 
 	return (app.run());
 }
