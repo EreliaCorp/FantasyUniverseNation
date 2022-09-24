@@ -14,6 +14,7 @@ namespace fun
 		GoGameMenu,
 		StartServer,
 		StartClient,
+		CheckConnection
 	};
 
 	class Publisher : public jgl::Singleton<jgl::Publisher<Event>>
@@ -36,6 +37,12 @@ namespace fun
 				return ("GoHostMenu");
 			case fun::Event::GoGameMenu:
 				return ("GoGameMenu");
+			case fun::Event::StartServer:
+				return ("StartServer");
+			case fun::Event::StartClient:
+				return ("StartClient");
+			case fun::Event::CheckConnection:
+				return ("CheckConnection");
 			default :
 				return ("Default event");
 				break;

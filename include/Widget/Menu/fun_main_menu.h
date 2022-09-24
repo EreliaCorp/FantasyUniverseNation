@@ -80,7 +80,7 @@ namespace fun
 				_username_label->set_depth(_depth + 4);
 				_username_label->activate();
 
-				_username_entry = new fun::Widget::Overload::TextEntry("", _background);
+				_username_entry = new fun::Widget::Overload::TextEntry("Hyarius", _background);
 				_username_entry->set_depth(_depth + 2);
 				_username_entry->activate();
 
@@ -88,7 +88,7 @@ namespace fun
 				_address_label->set_depth(_depth + 4);
 				_address_label->activate();
 
-				_address_entry = new fun::Widget::Overload::TextEntry("", _background);
+				_address_entry = new fun::Widget::Overload::TextEntry("localhost", _background);
 				_address_entry->set_depth(_depth + 2);
 				_address_entry->activate();
 
@@ -97,7 +97,7 @@ namespace fun
 						{
 							fun::Structure::Context::instance()->username = _username_entry->label().text();
 							fun::Structure::Context::instance()->address = _address_entry->label().text();
-							fun::Publisher::notify(fun::Event::GoLobbyMenu);
+							fun::Publisher::notify(fun::Event::StartClient);
 						}
 					}, _background);
 				_connect_button->set_depth(_depth + 2);

@@ -22,6 +22,7 @@
     <ClCompile Include="src\main.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="include\Activity\fun_connection_activity.h" />
     <ClInclude Include="include\Activity\fun_load_program_activity.h" />
     <ClInclude Include="include\Structure\fun_context.h" />
     <ClInclude Include="include\Utils\fun_event_manager.h" />

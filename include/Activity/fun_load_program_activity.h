@@ -4,6 +4,8 @@
 
 #include "structure/fun_context.h"
 
+#include "Activity/fun_connection_activity.h"
+
 namespace fun
 {
 	namespace Activity
@@ -53,6 +55,7 @@ namespace fun
 				{
 				case State::LoadingActivities:
 				{
+					fun::ActivityManager::instance()->subscribe_activity(fun::Event::CheckConnection, new fun::Activity::Connection());
 					_set_state(State::ClearingContext);
 					break;
 				}

@@ -46,16 +46,12 @@ namespace fun
 			fun::Structure::Context::instanciate();
 
 			fun::Menu::MainMenu::instanciate(this);
-			fun::Menu::MainMenu::instance()->activate();
 
 			fun::Menu::LobbyMenu::instanciate(this);
-			fun::Menu::LobbyMenu::instance()->activate();
 
 			fun::Menu::HostMenu::instanciate(this);
-			fun::Menu::HostMenu::instance()->activate();
 
 			fun::Menu::GameMenu::instanciate(this);
-			fun::Menu::GameMenu::instance()->activate();
 
 			fun::ActivityManager::instanciate(nullptr);
 			fun::ActivityManager::instance()->activate();
@@ -70,7 +66,6 @@ namespace fun
 			fun::Publisher::subscribe(fun::Event::GoLobbyMenu, [&]() {
 					jgl::cout << "Activating menu [fun::Menu::LobbyMenu]" << jgl::endl;
 					active_menu(fun::Menu::LobbyMenu::instance());
-					fun::Publisher::notify(fun::Event::StartClient);
 				});
 
 			fun::Publisher::subscribe(fun::Event::GoHostMenu, [&]() {
@@ -85,15 +80,22 @@ namespace fun
 				});
 
 			fun::Publisher::subscribe(fun::Event::StartClient, [&]() {
-					jgl::cout << "Starting the server manager" << jgl::endl;
+					jgl::cout << "Starting the client manager" << jgl::endl;
 					try
 					{
-						if (fun::Network::ClientManager::instance() == nullptr)
-							fun::Network::ClientManager::instanciate(this);
+						if (fun::Network::ClientManager::instance() != nullptr)
+						{
+							_remove_children(fun::Network::ClientManager::instance());
+							fun::Network::ClientManager::release();
+						}
+
+						fun::Network::ClientManager::instanciate(this);
 
 						fun::Network::ClientManager::instance()->activate();
 
 						fun::Network::ClientManager::instance()->start(fun::Structure::Context::instance()->address, SERVER_PORT);
+
+						fun::Publisher::notify(fun::Event::CheckConnection);
 					}
 					catch (...)
 					{
@@ -102,7 +104,7 @@ namespace fun
 				});
 
 			fun::Publisher::subscribe(fun::Event::StartServer, [&]() {
-					jgl::cout << "Starting the client manager" << jgl::endl;
+					jgl::cout << "Starting the server manager" << jgl::endl;
 					try
 					{
 						if (fun::Network::ServerManager::instance() == nullptr)
