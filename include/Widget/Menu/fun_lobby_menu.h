@@ -17,6 +17,21 @@ namespace fun
 
 			fun::Widget::Overload::TextLabel* _username_label[4];
 
+			void _on_server_instanciation()
+			{
+				THROW_INFORMATION("On server instanciation [LobbyMenu]");
+			}
+
+			void _on_client_instanciation()
+			{
+				THROW_INFORMATION("On client instanciation [LobbyMenu]");
+
+				CLIENT_ACTIVITY(fun::Network::ServerMessage::GameRoomData) {
+					fun::Structure::Context::instance()->gameRoom.pull(p_msg);
+					_update_player_information();
+				});
+			}
+
 			void _render()
 			{
 
@@ -46,6 +61,23 @@ namespace fun
 				return (false);
 			}
 
+			void _update_player_information()
+			{
+				for (jgl::Size_t i = 0; i < fun::Structure::Context::instance()->gameRoom.C_MAX_NB_PLAYER; i++)
+				{
+					if (fun::Structure::Context::instance()->gameRoom.players[i].username == "")
+					{
+						_username_label[i]->label().set_text("Empty slot");
+						_username_label[i]->label().set_horizontal_align(jgl::Horizontal_alignment::Centred);
+					}
+					else
+					{
+						_username_label[i]->label().set_text(fun::Structure::Context::instance()->gameRoom.players[i].username);
+						_username_label[i]->label().set_horizontal_align(jgl::Horizontal_alignment::Left);
+					}
+				}
+			}
+
 			LobbyMenu(jgl::Widget* p_parent) : Menu(p_parent)
 			{
 				_background = new fun::Widget::Overload::Frame(this);
@@ -53,11 +85,18 @@ namespace fun
 
 				for (jgl::Size_t i = 0; i < 4; i++)
 				{
-
 					_username_label[i] = new fun::Widget::Overload::TextLabel("Empty slot", _background);
 					_username_label[i]->set_depth(_depth + 4);
 					_username_label[i]->activate();
 				}
+
+				fun::Publisher::subscribe(fun::Event::JoinRoom, [&]() {
+						fun::Network::Message msg = fun::Network::Message(fun::Network::ServerMessage::PlayerJoinRoom);
+
+						msg << fun::Structure::Context::instance()->username;
+
+						fun::Network::ClientManager::send(msg);
+					});
 			}
 
 		public:

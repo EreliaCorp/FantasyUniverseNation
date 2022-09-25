@@ -8,7 +8,8 @@ namespace fun
 	{
 		enum class ServerMessage
 		{
-			Player_join_room
+			PlayerJoinRoom,
+			GameRoomData
 		};
 
 		using Connection = jgl::Connection<ServerMessage>;

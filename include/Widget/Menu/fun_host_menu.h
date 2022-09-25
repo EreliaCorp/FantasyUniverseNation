@@ -12,7 +12,40 @@ namespace fun
 			friend class jgl::Singleton_widget<HostMenu>;
 
 		private:
+
+			void _on_server_instanciation()
+			{
+				THROW_INFORMATION("On server instanciation [HostMenu]");
+				
+				fun::Network::ServerManager::instance()->server()->set_logout_function([&](fun::Network::Connection* p_client, jgl::Data_contener& p_param) {
+						fun::Structure::Player* player = fun::Structure::Context::instance()->gameRoom.player_by_client(p_client->id());
+						if (player != nullptr)
+						{
+							fun::Structure::Context::instance()->gameRoom.remove_player(player->id);
+							_push_player_information();
+							_update_player_information();
+						}
+					});
+				SERVER_ACTIVITY(fun::Network::ServerMessage::PlayerJoinRoom) {
+					jgl::String username;
+
+					p_msg >> username;
+
+					fun::Structure::Context::instance()->gameRoom.add_player(p_client->id(), username);
+
+					_push_player_information();
+					_update_player_information();
+				});
+			}
+
+			void _on_client_instanciation()
+			{
+				THROW_INFORMATION("On client instanciation [HostMenu]");
+			}
+
 			fun::Widget::Overload::Frame* _background;
+			fun::Widget::Overload::Button* _launch_game_button;
+			fun::Widget::Overload::Button* _quit_game_button;
 
 			fun::Widget::Overload::TextLabel* _username_label[4];
 			fun::Widget::Overload::Button* _kick_button[4];
@@ -28,12 +61,13 @@ namespace fun
 
 				jgl::Float space = 10;
 				jgl::Vector2Int kick_button_size = jgl::Vector2Int(30, 30);
+				jgl::Vector2Int launch_button_size = jgl::Vector2Int(((_area.x - space * 4) / 2 - space) / 2, 50);
 				jgl::Vector2Int username_label_size = jgl::Vector2Int((_area.x - space * 5) / 2, 50);
 				jgl::Vector2Int username_label_pos = jgl::Vector2Int(space * 2, space * 2);
 
 				for (jgl::Size_t i = 0; i < 4; i++)
 				{
-					jgl::Vector2Int tmp_pos = username_label_pos + jgl::Vector2Int(username_label_size.x + space, _area.y - username_label_size.y - space * 4) * jgl::Vector2Int(i % 2, i / 2);
+					jgl::Vector2Int tmp_pos = username_label_pos + jgl::Vector2Int(username_label_size.x + space, _area.y - (username_label_size.y + space * 2) * 2 - space * 2) * jgl::Vector2Int(i % 2, i / 2);
 					_username_label[i]->set_geometry(tmp_pos, username_label_size);
 					_kick_button[i]->set_geometry(tmp_pos + jgl::Vector2Int(username_label_size.x - kick_button_size.x, 0), kick_button_size);
 				}
@@ -49,10 +83,54 @@ namespace fun
 				return (false);
 			}
 
+			void _push_player_information()
+			{
+				fun::Network::Message msg = fun::Network::Message(fun::Network::ServerMessage::GameRoomData);
+
+				fun::Structure::Context::instance()->gameRoom.push(msg);
+
+				for (jgl::Size_t i = 0; i < fun::Structure::GameRoom::C_MAX_NB_PLAYER; i++)
+				{
+					auto client = fun::Network::ServerManager::instance()->server()->connection(fun::Structure::Context::instance()->gameRoom.players[i].client_id);
+
+					if (client != nullptr)
+						client->send(msg);
+				}
+			}
+
+			void _update_player_information()
+			{
+				for (jgl::Size_t i = 0; i < fun::Structure::Context::instance()->gameRoom.C_MAX_NB_PLAYER; i++)
+				{
+					if (fun::Structure::Context::instance()->gameRoom.players[i].username == "")
+					{
+						_username_label[i]->label().set_text("Empty slot");
+						_username_label[i]->label().set_horizontal_align(jgl::Horizontal_alignment::Centred);
+					}
+					else
+					{
+						_username_label[i]->label().set_text(fun::Structure::Context::instance()->gameRoom.players[i].username);
+						_username_label[i]->label().set_horizontal_align(jgl::Horizontal_alignment::Left);
+					}
+				}
+			}
+
 			HostMenu(jgl::Widget* p_parent) : Menu(p_parent)
 			{
 				_background = new fun::Widget::Overload::Frame(this);
 				_background->activate();
+
+				_launch_game_button = new fun::Widget::Overload::Button("Launch", [=](jgl::Data_contener& p_param) {
+
+					}, _background);
+				_launch_game_button->set_depth(_depth + 8);
+				_launch_game_button->activate();
+
+				_quit_game_button = new fun::Widget::Overload::Button("Cancel", [=](jgl::Data_contener& p_param) {
+
+					}, _background);
+				_quit_game_button->set_depth(_depth + 8);
+				_quit_game_button->activate();
 
 				for (jgl::Size_t i = 0; i < 4; i++)
 				{

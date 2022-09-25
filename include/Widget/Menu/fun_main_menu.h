@@ -23,6 +23,16 @@ namespace fun
 			fun::Widget::Overload::Button* _connect_button;
 			fun::Widget::Overload::Button* _host_button;
 
+			void _on_server_instanciation()
+			{
+				THROW_INFORMATION("On server instanciation [MainMenu]");
+			}
+
+			void _on_client_instanciation()
+			{
+				THROW_INFORMATION("On client instanciation [MainMenu]");
+			}
+
 			void _render()
 			{
 

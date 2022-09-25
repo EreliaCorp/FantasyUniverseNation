@@ -43,6 +43,11 @@ namespace fun
 		MainApplication(jgl::Widget* p_parent) : jgl::Widget(p_parent),
 			_active_menu(nullptr)
 		{
+			fun::ActivityManager::instanciate(nullptr);
+			fun::ActivityManager::instance()->activate();
+
+			fun::ActivityManager::instance()->subscribe_activity(fun::Event::LoadProgram, new fun::Activity::LoadProgram());
+
 			fun::Structure::Context::instanciate();
 
 			fun::Menu::MainMenu::instanciate(this);
@@ -52,11 +57,6 @@ namespace fun
 			fun::Menu::HostMenu::instanciate(this);
 
 			fun::Menu::GameMenu::instanciate(this);
-
-			fun::ActivityManager::instanciate(nullptr);
-			fun::ActivityManager::instance()->activate();
-
-			fun::ActivityManager::instance()->subscribe_activity(fun::Event::LoadProgram, new fun::Activity::LoadProgram());
 
 			fun::Publisher::subscribe(fun::Event::GoMainMenu, [&]() {
 					jgl::cout << "Activating menu [fun::Menu::MainMenu]" << jgl::endl;
@@ -95,6 +95,7 @@ namespace fun
 
 						fun::Network::ClientManager::instance()->start(fun::Structure::Context::instance()->address, SERVER_PORT);
 
+						fun::Publisher::notify(fun::Event::OnClientInstanciation);
 						fun::Publisher::notify(fun::Event::CheckConnection);
 					}
 					catch (...)
@@ -113,6 +114,8 @@ namespace fun
 						fun::Network::ServerManager::instance()->activate();
 
 						fun::Network::ServerManager::instance()->start(SERVER_PORT);
+
+						fun::Publisher::notify(fun::Event::OnServerInstanciation);
 					}
 					catch (...)
 					{

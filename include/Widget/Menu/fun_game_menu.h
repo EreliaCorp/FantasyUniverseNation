@@ -12,6 +12,17 @@ namespace fun
 			friend class jgl::Singleton_widget<GameMenu>;
 
 		private:
+
+			void _on_server_instanciation()
+			{
+				THROW_INFORMATION("On server instanciation [GameMenu]");
+			}
+
+			void _on_client_instanciation()
+			{
+				THROW_INFORMATION("On client instanciation [GameMenu]");
+			}
+
 			void _render()
 			{
 
