@@ -67,10 +67,13 @@ namespace fun
 
 				for (jgl::Size_t i = 0; i < 4; i++)
 				{
-					jgl::Vector2Int tmp_pos = username_label_pos + jgl::Vector2Int(username_label_size.x + space, _area.y - (username_label_size.y + space * 2) * 2 - space * 2) * jgl::Vector2Int(i % 2, i / 2);
+					jgl::Vector2Int tmp_pos = username_label_pos + jgl::Vector2Int(username_label_size.x + space, _area.y - (username_label_size.y + space * 2) * 2 - space * 1) * jgl::Vector2Int(i % 2, i / 2);
 					_username_label[i]->set_geometry(tmp_pos, username_label_size);
 					_kick_button[i]->set_geometry(tmp_pos + jgl::Vector2Int(username_label_size.x - kick_button_size.x, 0), kick_button_size);
 				}
+
+				_launch_game_button->set_geometry(_area - space * 2 - jgl::Vector2Int(launch_button_size.x * 2 + space, launch_button_size.y), launch_button_size);
+				_quit_game_button->set_geometry(_area - space * 2 - launch_button_size, launch_button_size);
 			}
 
 			jgl::Bool _update()
@@ -89,12 +92,20 @@ namespace fun
 
 				fun::Structure::Context::instance()->gameRoom.push(msg);
 
+				_send_message_to_player(msg);
+			}
+
+			void _send_message_to_player(const fun::Network::Message& p_msg)
+			{
 				for (jgl::Size_t i = 0; i < fun::Structure::GameRoom::C_MAX_NB_PLAYER; i++)
 				{
 					auto client = fun::Network::ServerManager::instance()->server()->connection(fun::Structure::Context::instance()->gameRoom.players[i].client_id);
 
 					if (client != nullptr)
-						client->send(msg);
+					{
+						jgl::cout << "Sending message to player [" << fun::Structure::Context::instance()->gameRoom.players[i].id << "][" << fun::Structure::Context::instance()->gameRoom.players[i].client_id << "]" << jgl::endl;
+						client->send(p_msg);
+					}
 				}
 			}
 
@@ -127,7 +138,8 @@ namespace fun
 				_launch_game_button->activate();
 
 				_quit_game_button = new fun::Widget::Overload::Button("Cancel", [=](jgl::Data_contener& p_param) {
-
+						_send_message_to_player(fun::Network::ServerMessage::ExitGameRoom);
+						fun::Publisher::notify(fun::Event::GoMainMenu);
 					}, _background);
 				_quit_game_button->set_depth(_depth + 8);
 				_quit_game_button->activate();
