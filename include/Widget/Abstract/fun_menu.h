@@ -16,9 +16,6 @@ namespace fun
 		class Menu : public jgl::Widget
 		{
 		private:
-			jgl::Bool _server_instanciation_performed = false;
-			jgl::Bool _client_instanciation_performed = false;
-
 			virtual void _on_server_instanciation() = 0;
 			virtual void _on_client_instanciation() = 0;
 
@@ -29,18 +26,10 @@ namespace fun
 			Menu(jgl::Widget *p_parent) : jgl::Widget(p_parent)
 			{
 				fun::Publisher::subscribe(fun::Event::OnServerInstanciation, [&]() {
-						if (_server_instanciation_performed == false)
-						{
-							_on_server_instanciation();
-							_server_instanciation_performed = true;
-						}
+						_on_server_instanciation();
 					});
 				fun::Publisher::subscribe(fun::Event::OnClientInstanciation, [&]() {
-						if (_client_instanciation_performed == false)
-						{
-							_on_client_instanciation();
-							_client_instanciation_performed = true;
-						}
+						_on_client_instanciation();
 					});
 			}
 		};

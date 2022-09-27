@@ -124,7 +124,10 @@ namespace fun
 
 			void on_focus()
 			{
-
+				if (fun::Network::ClientManager::instance() != nullptr)
+					fun::Network::ClientManager::instance()->client()->disconnect();
+				if (fun::Network::ServerManager::instance() != nullptr)
+					fun::Network::ServerManager::instance()->server()->stop();
 			}
 
 			void on_unfocus()

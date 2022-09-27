@@ -30,6 +30,10 @@ namespace fun
 					fun::Structure::Context::instance()->gameRoom.pull(p_msg);
 					_update_player_information();
 				});
+
+				CLIENT_ACTIVITY(fun::Network::ServerMessage::ExitGameRoom) {
+					fun::Publisher::notify(fun::Event::GoMainMenu);
+				});
 			}
 
 			void _render()
