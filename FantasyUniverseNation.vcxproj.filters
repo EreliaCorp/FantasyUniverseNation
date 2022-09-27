@@ -56,19 +56,22 @@
     <ClInclude Include="include\Widget\Menu\fun_main_menu.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="include\Widget\Menu\fun_lobby_menu.h">
+    <ClInclude Include="include\Widget\Menu\fun_player_lobby_menu.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="include\Widget\Menu\fun_game_menu.h">
+    <ClInclude Include="include\Widget\Menu\fun_player_game_menu.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="include\Structure\fun_context.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="include\Widget\Menu\fun_host_menu.h">
+    <ClInclude Include="include\Widget\Menu\fun_host_lobby_menu.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="include\Activity\fun_connection_activity.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="include\Widget\Menu\fun_host_game_menu.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

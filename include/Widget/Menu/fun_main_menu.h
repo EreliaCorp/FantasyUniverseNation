@@ -114,7 +114,7 @@ namespace fun
 				_connect_button->activate();
 
 				_host_button = new fun::Widget::Overload::Button("Host", [&](jgl::Data_contener& p_param) {
-						fun::Publisher::notify(fun::Event::GoHostMenu);
+						fun::Publisher::notify(fun::Event::GoHostLobbyMenu);
 					}, _background);
 				_host_button->set_depth(_depth + 2);
 				_host_button->activate();

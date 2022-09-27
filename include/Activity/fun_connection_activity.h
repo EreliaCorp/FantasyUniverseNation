@@ -88,7 +88,7 @@ namespace fun
 				case State::ConnectionAccepted:
 				{
 					fun::Publisher::notify(fun::Event::JoinRoom);
-					fun::Publisher::notify(fun::Event::GoLobbyMenu);
+					fun::Publisher::notify(fun::Event::GoPlayerLobbyMenu);
 					_set_state(State::Completed);
 					break;
 				}

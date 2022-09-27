@@ -31,9 +31,10 @@
     <ClInclude Include="include\Widget\Abstract\fun_menu.h" />
     <ClInclude Include="include\Widget\fun_main_application.h" />
     <ClInclude Include="include\Widget\Manager\fun_activity_manager.h" />
-    <ClInclude Include="include\Widget\Menu\fun_game_menu.h" />
-    <ClInclude Include="include\Widget\Menu\fun_host_menu.h" />
-    <ClInclude Include="include\Widget\Menu\fun_lobby_menu.h" />
+    <ClInclude Include="include\Widget\Menu\fun_player_game_menu.h" />
+    <ClInclude Include="include\Widget\Menu\fun_host_game_menu.h" />
+    <ClInclude Include="include\Widget\Menu\fun_host_lobby_menu.h" />
+    <ClInclude Include="include\Widget\Menu\fun_player_lobby_menu.h" />
     <ClInclude Include="include\Widget\Menu\fun_main_menu.h" />
     <ClInclude Include="include\Widget\Overload\fun_button.h" />
     <ClInclude Include="include\Widget\Overload\fun_frame.h" />

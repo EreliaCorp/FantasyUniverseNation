@@ -7,9 +7,10 @@
 #include "Activity/fun_load_program_activity.h"
 
 #include "widget/menu/fun_main_menu.h"
-#include "widget/menu/fun_lobby_menu.h"
-#include "widget/menu/fun_host_menu.h"
-#include "widget/menu/fun_game_menu.h"
+#include "widget/menu/fun_player_lobby_menu.h"
+#include "widget/menu/fun_host_lobby_menu.h"
+#include "widget/menu/fun_player_game_menu.h"
+#include "widget/menu/fun_host_game_menu.h"
 
 namespace fun
 {
@@ -25,9 +26,10 @@ namespace fun
 		void _on_geometry_change()
 		{
 			fun::Menu::MainMenu::instance()->set_geometry(0, _area);
-			fun::Menu::LobbyMenu::instance()->set_geometry(0, _area);
-			fun::Menu::HostMenu::instance()->set_geometry(0, _area);
-			fun::Menu::GameMenu::instance()->set_geometry(0, _area);
+			fun::Menu::PlayerLobbyMenu::instance()->set_geometry(0, _area);
+			fun::Menu::HostLobbyMenu::instance()->set_geometry(0, _area);
+			fun::Menu::PlayerGameMenu::instance()->set_geometry(0, _area);
+			fun::Menu::HostGameMenu::instance()->set_geometry(0, _area);
 		}
 
 		jgl::Bool _update()
@@ -52,31 +54,38 @@ namespace fun
 
 			fun::Menu::MainMenu::instanciate(this);
 
-			fun::Menu::LobbyMenu::instanciate(this);
+			fun::Menu::PlayerLobbyMenu::instanciate(this);
 
-			fun::Menu::HostMenu::instanciate(this);
+			fun::Menu::HostLobbyMenu::instanciate(this);
 
-			fun::Menu::GameMenu::instanciate(this);
+			fun::Menu::PlayerGameMenu::instanciate(this);
+
+			fun::Menu::HostGameMenu::instanciate(this);
 
 			fun::Publisher::subscribe(fun::Event::GoMainMenu, [&]() {
-					jgl::cout << "Activating menu [fun::Menu::MainMenu]" << jgl::endl;
-					active_menu(fun::Menu::MainMenu::instance());
+				jgl::cout << "Activating menu [fun::Menu::MainMenu]" << jgl::endl;
+				active_menu(fun::Menu::MainMenu::instance());
 				});
 
-			fun::Publisher::subscribe(fun::Event::GoLobbyMenu, [&]() {
-					jgl::cout << "Activating menu [fun::Menu::LobbyMenu]" << jgl::endl;
-					active_menu(fun::Menu::LobbyMenu::instance());
+			fun::Publisher::subscribe(fun::Event::GoPlayerLobbyMenu, [&]() {
+				jgl::cout << "Activating menu [fun::Menu::PlayerLobbyMenu]" << jgl::endl;
+				active_menu(fun::Menu::PlayerLobbyMenu::instance());
 				});
 
-			fun::Publisher::subscribe(fun::Event::GoHostMenu, [&]() {
-					jgl::cout << "Activating menu [fun::Menu::HostMenu]" << jgl::endl;
-					active_menu(fun::Menu::HostMenu::instance());
+			fun::Publisher::subscribe(fun::Event::GoHostLobbyMenu, [&]() {
+				jgl::cout << "Activating menu [fun::Menu::HostLobbyMenu]" << jgl::endl;
+				active_menu(fun::Menu::HostLobbyMenu::instance());
 					fun::Publisher::notify(fun::Event::StartServer);
 				});
 
-			fun::Publisher::subscribe(fun::Event::GoGameMenu, [&]() {
-					jgl::cout << "Activating menu [fun::Menu::GameMenu]" << jgl::endl;
-					active_menu(fun::Menu::GameMenu::instance());
+			fun::Publisher::subscribe(fun::Event::GoPlayerGameMenu, [&]() {
+				jgl::cout << "Activating menu [fun::Menu::PlayerGameMenu]" << jgl::endl;
+				active_menu(fun::Menu::PlayerGameMenu::instance());
+				});
+
+			fun::Publisher::subscribe(fun::Event::GoHostGameMenu, [&]() {
+				jgl::cout << "Activating menu [fun::Menu::HostGameMenu]" << jgl::endl;
+				active_menu(fun::Menu::HostGameMenu::instance());
 				});
 
 			fun::Publisher::subscribe(fun::Event::StartClient, [&]() {

@@ -10,7 +10,8 @@ namespace fun
 		{
 			PlayerJoinRoom,
 			GameRoomData,
-			ExitGameRoom
+			ExitGameRoom,
+			StartGame
 		};
 
 		using Connection = jgl::Connection<ServerMessage>;

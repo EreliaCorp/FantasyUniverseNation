@@ -9,9 +9,10 @@ namespace fun
 		LoadProgram,
 		ClearContextGlobal,
 		GoMainMenu,
-		GoLobbyMenu,
-		GoHostMenu,
-		GoGameMenu,
+		GoPlayerLobbyMenu,
+		GoHostLobbyMenu,
+		GoPlayerGameMenu,
+		GoHostGameMenu,
 		StartServer,
 		OnServerInstanciation,
 		StartClient,
@@ -34,12 +35,14 @@ namespace fun
 				return ("ClearContextGlobal");
 			case fun::Event::GoMainMenu:
 				return ("GoMainMenu");
-			case fun::Event::GoLobbyMenu:
-				return ("GoLobbyMenu");
-			case fun::Event::GoHostMenu:
-				return ("GoHostMenu");
-			case fun::Event::GoGameMenu:
-				return ("GoGameMenu");
+			case fun::Event::GoPlayerLobbyMenu:
+				return ("GoPlayerLobbyMenu");
+			case fun::Event::GoHostLobbyMenu:
+				return ("GoHostLobbyMenu");
+			case fun::Event::GoPlayerGameMenu:
+				return ("GoPlayerGameMenu");
+			case fun::Event::GoHostGameMenu:
+				return ("GoHostGameMenu");
 			case fun::Event::StartServer:
 				return ("StartServer");
 			case fun::Event::StartClient:
