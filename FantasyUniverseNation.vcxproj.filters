@@ -74,5 +74,11 @@
     <ClInclude Include="include\Widget\Menu\fun_host_game_menu.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="include\Widget\fun_board_renderer.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="include\Widget\fun_card_renderer.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>

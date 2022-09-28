@@ -111,12 +111,31 @@ namespace fun
 			}
 		};
 
+		struct Card
+		{
+			Card()
+			{
+
+			}
+		};
+
+		struct Board
+		{
+			jgl::Array<fun::Structure::Card> played_cards;
+
+			Board()
+			{
+
+			}
+		};
+
 		struct Context : public jgl::Singleton<Context>
 		{
 			jgl::String username;
 			jgl::String address;
 
 			GameRoom gameRoom;
+			Board board;
 
 			void clear()
 			{

@@ -35,6 +35,10 @@ namespace fun
 				CLIENT_ACTIVITY(fun::Network::ServerMessage::ExitGameRoom) {
 					fun::Publisher::notify(fun::Event::GoMainMenu);
 				});
+
+				CLIENT_ACTIVITY(fun::Network::ServerMessage::GameLaunched) {
+					fun::Publisher::notify(fun::Event::GoPlayerGameMenu);
+				});
 			}
 
 			void _render()

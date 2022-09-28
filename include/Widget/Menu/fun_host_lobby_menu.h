@@ -133,8 +133,11 @@ namespace fun
 				_background->activate();
 
 				_launch_game_button = new fun::Widget::Overload::Button("Launch", [=](jgl::Data_contener& p_param) {
-						_send_message_to_player(fun::Network::ServerMessage::ExitGameRoom);
-						fun::Publisher::notify(fun::Event::GoMainMenu);
+						if (fun::Structure::Context::instance()->gameRoom.nb_player != 0)
+						{
+							_send_message_to_player(fun::Network::ServerMessage::GameLaunched);
+							fun::Publisher::notify(fun::Event::GoHostGameMenu);
+						}
 					}, _background);
 				_launch_game_button->set_depth(_depth + 8);
 				_launch_game_button->activate();
@@ -167,7 +170,7 @@ namespace fun
 
 			void on_focus()
 			{
-
+				fun::Structure::Context::instance()->clear();
 			}
 
 			void on_unfocus()
