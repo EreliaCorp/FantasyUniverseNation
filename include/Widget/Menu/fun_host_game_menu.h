@@ -38,11 +38,21 @@ namespace fun
 
 			jgl::Bool _update()
 			{
+				if (jgl::Application::active_application()->keyboard().get_key(jgl::Key::H) == jgl::Input_status::Release)
+				{
+					fun::Structure::Context::instance()->board.play_card(
+							fun::Structure::Context::instance()->board.deck.draw(),
+							jgl::Vector2Int(jgl::generate_nbr(0, fun::Structure::Board::C_SIZE.x), jgl::generate_nbr(0, fun::Structure::Board::C_SIZE.y)
+						));
+					_board_renderer->update_board();
+				}
+
 				return (false);
 			}
 
 			jgl::Bool _fixed_update()
 			{
+				
 				return (false);
 			}
 
@@ -50,6 +60,19 @@ namespace fun
 			{
 				_board_renderer = new fun::Widget::BoardRenderer(this);
 				_board_renderer->activate();
+
+				for (jgl::Size_t i = 0; i < 30; i++)
+				{
+					fun::Structure::Context::instance()->board.deck.add_card(fun::Structure::Card::Card());
+				}
+
+				for (jgl::Size_t i = 0; i < 4; i++)
+				{
+					fun::Structure::Context::instance()->board.play_card(
+							fun::Structure::Context::instance()->board.deck.draw(), 
+							jgl::Vector2Int(jgl::generate_nbr(0, fun::Structure::Board::C_SIZE.x), jgl::generate_nbr(0, fun::Structure::Board::C_SIZE.y)
+						));
+				}
 
 				_board_renderer->update_board();
 			}

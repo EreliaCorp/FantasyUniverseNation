@@ -113,19 +113,134 @@ namespace fun
 
 		struct Card
 		{
+			jgl::String name;
+
 			Card()
 			{
+				for (jgl::Size_t i = 0; i < 6; i++)
+				{
+					name.push_back(jgl::Glyph(jgl::Int(jgl::generate_nbr(65, 89))));
+				}
+			}
 
+			void push(fun::Network::Message& p_msg)
+			{
+				p_msg << name;
+			}
+
+			void pull(fun::Network::Message& p_msg)
+			{
+				p_msg >> name;
+			}
+		};
+
+		class Deck
+		{
+		private:
+			jgl::Size_t index;
+			jgl::Array<Card> cards;
+
+		public:
+			jgl::Size_t size() { return (cards.size()); }
+
+			void add_card(Card p_card)
+			{
+				cards.push_back(p_card);
+			}
+
+			Card draw()
+			{
+				Card result = cards[index % cards.size()];
+				
+				index++;
+
+				return (result);
+			}
+
+			void shuffle()
+			{
+
+			}
+
+			void push(fun::Network::Message& p_msg)
+			{
+				p_msg << index;
+				p_msg << size();
+				for (jgl::Size_t i = 0; i < cards.size(); i++)
+				{
+					cards[i].push(p_msg);
+				}
+			}
+
+			void pull(fun::Network::Message& p_msg)
+			{
+				jgl::Size_t size;
+
+				p_msg >> index;
+				p_msg >> size;
+				cards.resize(size);
+				for (jgl::Size_t i = 0; i < size; i++)
+				{
+					cards[i].pull(p_msg);
+				}
+			}
+		};
+
+		struct PlayedCard
+		{
+			Card card;
+			jgl::Vector2 pos;
+
+			void push(fun::Network::Message& p_msg)
+			{
+				card.push(p_msg);
+				p_msg << pos;
+			}
+
+			void pull(fun::Network::Message& p_msg)
+			{
+				card.pull(p_msg);
+				p_msg >> pos;
 			}
 		};
 
 		struct Board
 		{
-			jgl::Array<fun::Structure::Card> played_cards;
+			static inline const jgl::Vector2 C_SIZE = jgl::Vector2(100, 70);
+
+			fun::Structure::Deck deck;
+			jgl::Array<fun::Structure::PlayedCard> played_cards;
 
 			Board()
 			{
+				
+			}
 
+			void play_card(const fun::Structure::Card& p_card, jgl::Vector2 p_pos)
+			{
+				fun::Structure::PlayedCard tmp_card;
+
+				tmp_card.card = p_card;
+				tmp_card.pos = p_pos;
+
+				played_cards.push_back(tmp_card);
+			}
+
+			void push(fun::Network::Message& p_msg)
+			{
+				p_msg << static_cast<jgl::Size_t>(played_cards.size());
+
+				for (jgl::Size_t i = 0; i < played_cards.size(); i++)
+				{
+					played_cards[i].push(p_msg);
+				}
+			}
+
+			void pull(fun::Network::Message& p_msg)
+			{
+				jgl::Size_t nb_card;
+
+				p_msg >> nb_card;
 			}
 		};
 

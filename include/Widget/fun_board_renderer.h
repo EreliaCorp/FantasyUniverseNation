@@ -23,6 +23,7 @@ namespace fun
 			jgl::Vector2Int _card_area;
 
 			jgl::Float _top_depth = 10;
+			jgl::Vector2 _card_unit;
 			jgl::Vector2Int _delta_anchor;
 			fun::Widget::CardRenderer* _selected_card;
 
@@ -41,9 +42,14 @@ namespace fun
 
 				_card_area = jgl::Vector2Int(_area.x / 8, _area.x / 8 * 1.4f);
 
+				_card_unit = jgl::Vector2(_area) / fun::Structure::Board::C_SIZE;
+
 				for (jgl::Size_t i = 0; i < _card_renderers.size(); i++)
 				{
-					_card_renderers[i]->set_geometry(jgl::Vector2Int(50 + (_card_area.x + 20) * i, 50), _card_area);
+					if (_card_renderers[i]->card() != nullptr)
+					{
+						_card_renderers[i]->set_geometry(_card_unit * _card_renderers[i]->card()->pos, _card_area);
+					}
 				}
 			}
 
@@ -55,17 +61,16 @@ namespace fun
 
 					for (jgl::Size_t i = 0; i < _card_renderers.size(); i++)
 					{
-						jgl::cout << "Comparing depth " << (_selected_card == nullptr ? -1 : _selected_card->depth()) << " vs " << _card_renderers[i]->depth() << jgl::endl;
 						if (_card_renderers[i]->is_pointed() == true && (_selected_card == nullptr || _card_renderers[i]->depth() > _selected_card->depth()))
 						{
-							_delta_anchor = _card_renderers[i]->anchor() - jgl::Application::active_application()->mouse().pos();
+							_delta_anchor = jgl::Vector2(_card_renderers[i]->anchor() - jgl::Application::active_application()->mouse().pos()) / _card_unit;
 							_selected_card = _card_renderers[i];
 						}
 					}
 					if (_selected_card != nullptr)
 					{
 						_top_depth++;
-						_selected_card->set_depth(_top_depth);
+						_selected_card->set_depth(_top_depth * 5);
 					}
 				}
 
@@ -73,7 +78,9 @@ namespace fun
 				{
 					if (jgl::Application::active_application()->mouse().get_button(jgl::Mouse_button::Left) == jgl::Input_status::Down)
 					{
-						_selected_card->set_geometry(jgl::Application::active_application()->mouse().pos() + _delta_anchor, _selected_card->area());
+						jgl::Vector2 tmp_delta = jgl::Vector2(jgl::Application::active_application()->mouse().pos()) / _card_unit;
+						_selected_card->card()->pos = tmp_delta + _delta_anchor;
+						_selected_card->set_geometry(_card_unit * _selected_card->card()->pos, _card_area);
 					}
 				}
 
@@ -104,24 +111,25 @@ namespace fun
 
 				_top_depth = 10;
 
-				for (jgl::Size_t i = 0; i < 4; i++)
+				for (jgl::Size_t i = 0; i < fun::Structure::Context::instance()->board.played_cards.size(); i++)
 				{
 					if (_card_renderer_pool.size() == 0)
 					{
 						fun::Widget::CardRenderer* new_card = new fun::Widget::CardRenderer(this);
-						new_card->set_depth(10);
 						_card_renderer_pool.push_back(new_card);
 					}
 
 					fun::Widget::CardRenderer* tmp_card = _card_renderer_pool.last();
-					tmp_card->set_geometry(jgl::Vector2Int(50 + (_card_area.x + 20) * i, 50), _card_area);
-					tmp_card->set_depth(_top_depth);
+					tmp_card->set_card(&(fun::Structure::Context::instance()->board.played_cards[i]));
+					tmp_card->set_depth(_top_depth * 5);
 					_top_depth++;
 					tmp_card->activate();
 
 					_card_renderer_pool.pop_back();
 					_card_renderers.push_back(tmp_card);
 				}
+
+				_on_geometry_change();
 			}
 		};
 	}
