@@ -109,6 +109,19 @@ namespace fun
 					players[i].pull(p_msg);
 				}
 			}
+
+			void send_message(const fun::Network::Message& p_msg)
+			{
+				for (jgl::Size_t i = 0; i < C_MAX_NB_PLAYER; i++)
+				{
+					auto client = fun::Network::ServerManager::instance()->server()->connection(players[i].client_id);
+
+					if (client != nullptr)
+					{
+						client->send(p_msg);
+					}
+				}
+			}
 		};
 
 		struct Card
@@ -190,17 +203,20 @@ namespace fun
 		{
 			Card card;
 			jgl::Vector2 pos;
+			jgl::Size_t level;
 
 			void push(fun::Network::Message& p_msg)
 			{
 				card.push(p_msg);
 				p_msg << pos;
+				p_msg << level;
 			}
 
 			void pull(fun::Network::Message& p_msg)
 			{
 				card.pull(p_msg);
 				p_msg >> pos;
+				p_msg >> level;
 			}
 		};
 
@@ -208,7 +224,6 @@ namespace fun
 		{
 			static inline const jgl::Vector2 C_SIZE = jgl::Vector2(100, 70);
 
-			fun::Structure::Deck deck;
 			jgl::Array<fun::Structure::PlayedCard> played_cards;
 
 			Board()
@@ -216,12 +231,13 @@ namespace fun
 				
 			}
 
-			void play_card(const fun::Structure::Card& p_card, jgl::Vector2 p_pos)
+			void play_card(const fun::Structure::Card& p_card, jgl::Vector2 p_pos, jgl::Size_t p_level)
 			{
 				fun::Structure::PlayedCard tmp_card;
 
 				tmp_card.card = p_card;
 				tmp_card.pos = p_pos;
+				tmp_card.level = p_level;
 
 				played_cards.push_back(tmp_card);
 			}
@@ -241,6 +257,11 @@ namespace fun
 				jgl::Size_t nb_card;
 
 				p_msg >> nb_card;
+				played_cards.resize(nb_card);
+				for (jgl::Size_t i = 0; i < nb_card; i++)
+				{
+					played_cards[i].pull(p_msg);
+				}
 			}
 		};
 
@@ -251,6 +272,7 @@ namespace fun
 
 			GameRoom gameRoom;
 			Board board;
+			Deck deck;
 
 			void clear()
 			{

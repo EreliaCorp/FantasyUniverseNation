@@ -18,7 +18,8 @@ namespace fun
 		StartClient,
 		OnClientInstanciation,
 		CheckConnection,
-		JoinRoom
+		JoinRoom,
+		OnBoardEdition
 	};
 
 	class Publisher : public jgl::Singleton<jgl::Publisher<Event>>
@@ -51,6 +52,8 @@ namespace fun
 				return ("CheckConnection");
 			case fun::Event::JoinRoom:
 				return ("JoinRoom");
+			case fun::Event::OnBoardEdition:
+				return ("OnBoardEdition");
 			default :
 				return ("Default event");
 				break;

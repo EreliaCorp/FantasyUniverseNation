@@ -60,10 +60,12 @@ namespace fun
 				_background->activate();
 
 				_icon = new fun::Widget::Overload::Frame(_background);
+				//_icon->box().set_background_color(jgl::Color::red());
 				_icon->box().set_border_size(1);
 				_icon->activate();
 
 				_name_label = new fun::Widget::Overload::TextLabel("Base text", _background);
+				//_name_label->box().set_background_color(jgl::Color::green());
 				_name_label->center_text();
 				_name_label->box().set_border_size(1);
 				_name_label->activate();

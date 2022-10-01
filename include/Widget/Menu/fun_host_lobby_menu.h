@@ -93,21 +93,7 @@ namespace fun
 
 				fun::Structure::Context::instance()->gameRoom.push(msg);
 
-				_send_message_to_player(msg);
-			}
-
-			void _send_message_to_player(const fun::Network::Message& p_msg)
-			{
-				for (jgl::Size_t i = 0; i < fun::Structure::GameRoom::C_MAX_NB_PLAYER; i++)
-				{
-					auto client = fun::Network::ServerManager::instance()->server()->connection(fun::Structure::Context::instance()->gameRoom.players[i].client_id);
-
-					if (client != nullptr)
-					{
-						jgl::cout << "Sending message to player [" << fun::Structure::Context::instance()->gameRoom.players[i].id << "][" << fun::Structure::Context::instance()->gameRoom.players[i].client_id << "]" << jgl::endl;
-						client->send(p_msg);
-					}
-				}
+				fun::Structure::Context::instance()->gameRoom.send_message(msg);
 			}
 
 			void _update_player_information()
@@ -133,9 +119,9 @@ namespace fun
 				_background->activate();
 
 				_launch_game_button = new fun::Widget::Overload::Button("Launch", [=](jgl::Data_contener& p_param) {
-						if (fun::Structure::Context::instance()->gameRoom.nb_player != 0)
+						//if (fun::Structure::Context::instance()->gameRoom.nb_player != 0)
 						{
-							_send_message_to_player(fun::Network::ServerMessage::GameLaunched);
+							fun::Structure::Context::instance()->gameRoom.send_message(fun::Network::ServerMessage::GameLaunched);
 							fun::Publisher::notify(fun::Event::GoHostGameMenu);
 						}
 					}, _background);
@@ -143,7 +129,7 @@ namespace fun
 				_launch_game_button->activate();
 
 				_quit_game_button = new fun::Widget::Overload::Button("Cancel", [=](jgl::Data_contener& p_param) {
-						_send_message_to_player(fun::Network::ServerMessage::ExitGameRoom);
+						fun::Structure::Context::instance()->gameRoom.send_message(fun::Network::ServerMessage::ExitGameRoom);
 						fun::Publisher::notify(fun::Event::GoMainMenu);
 					}, _background);
 				_quit_game_button->set_depth(_depth + 8);

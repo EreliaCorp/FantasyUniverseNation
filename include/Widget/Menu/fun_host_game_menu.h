@@ -16,6 +16,12 @@ namespace fun
 		private:
 			fun::Widget::BoardRenderer* _board_renderer;
 
+			jgl::Timer _update_message_timer = jgl::Timer(10);
+
+			jgl::Float _top_depth = 10;
+			jgl::Vector2Int _delta_anchor;
+			fun::Widget::CardRenderer* _selected_card;
+
 			void _on_server_instanciation()
 			{
 				THROW_INFORMATION("On server instanciation [HostGameMenu]");
@@ -41,11 +47,46 @@ namespace fun
 				if (jgl::Application::active_application()->keyboard().get_key(jgl::Key::H) == jgl::Input_status::Release)
 				{
 					fun::Structure::Context::instance()->board.play_card(
-							fun::Structure::Context::instance()->board.deck.draw(),
-							jgl::Vector2Int(jgl::generate_nbr(0, fun::Structure::Board::C_SIZE.x), jgl::generate_nbr(0, fun::Structure::Board::C_SIZE.y)
-						));
+							fun::Structure::Context::instance()->deck.draw(),
+							jgl::Vector2Int(jgl::generate_nbr(10, fun::Structure::Board::C_SIZE.x - 10), jgl::generate_nbr(10, fun::Structure::Board::C_SIZE.y - 10)),
+							_top_depth
+						);
 					_board_renderer->update_board();
+					_top_depth++;
+					fun::Publisher::instance()->notify(fun::Event::OnBoardEdition);
 				}
+
+				if (jgl::Application::active_application()->mouse().get_button(jgl::Mouse_button::Left) == jgl::Input_status::Pressed)
+				{
+					_selected_card = _board_renderer->selected_card();
+
+					if (_selected_card != nullptr)
+					{
+						_delta_anchor = jgl::Vector2(_selected_card->anchor() - jgl::Application::active_application()->mouse().pos()) / _board_renderer->card_unit();
+						_top_depth++;
+						_selected_card->card()->level = _top_depth;
+						_board_renderer->update_board();
+					}
+				}
+
+				if (_selected_card != nullptr)
+				{
+					static jgl::Vector2Int old_pos = -1;
+
+					jgl::Vector2Int tmp = jgl::Application::active_application()->mouse().pos();
+
+					if (old_pos != tmp && jgl::Application::active_application()->mouse().get_button(jgl::Mouse_button::Left) == jgl::Input_status::Down)
+					{
+						jgl::Vector2 tmp_delta = jgl::Vector2(tmp) / _board_renderer->card_unit();
+						_selected_card->card()->pos = tmp_delta + _delta_anchor;
+						_board_renderer->update_board();
+
+						fun::Publisher::instance()->notify(fun::Event::OnBoardEdition);
+					}
+
+					old_pos = tmp;
+				}
+
 
 				return (false);
 			}
@@ -63,25 +104,36 @@ namespace fun
 
 				for (jgl::Size_t i = 0; i < 30; i++)
 				{
-					fun::Structure::Context::instance()->board.deck.add_card(fun::Structure::Card::Card());
+					fun::Structure::Context::instance()->deck.add_card(fun::Structure::Card::Card());
 				}
 
+				_top_depth = 1;
 				for (jgl::Size_t i = 0; i < 4; i++)
 				{
-					fun::Structure::Context::instance()->board.play_card(
-							fun::Structure::Context::instance()->board.deck.draw(), 
-							jgl::Vector2Int(jgl::generate_nbr(0, fun::Structure::Board::C_SIZE.x), jgl::generate_nbr(0, fun::Structure::Board::C_SIZE.y)
-						));
-				}
 
+					fun::Structure::Context::instance()->board.play_card(
+							fun::Structure::Context::instance()->deck.draw(),
+							jgl::Vector2Int(jgl::generate_nbr(10, fun::Structure::Board::C_SIZE.x - 10), jgl::generate_nbr(10, fun::Structure::Board::C_SIZE.y - 10)),
+							_top_depth
+						);
+					_top_depth++;
+				}
 				_board_renderer->update_board();
+
+				fun::Publisher::instance()->subscribe(fun::Event::OnBoardEdition, [&]() {
+						fun::Network::Message msg(fun::Network::ServerMessage::BoardData);
+
+						fun::Structure::Context::instance()->board.push(msg);
+
+						fun::Structure::Context::instance()->gameRoom.send_message(msg);
+					});
 			}
 
 		public:
 
 			void on_focus()
 			{
-
+				fun::Publisher::instance()->notify(fun::Event::OnBoardEdition);
 			}
 
 			void on_unfocus()

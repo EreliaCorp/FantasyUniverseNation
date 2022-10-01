@@ -67,7 +67,7 @@ namespace fun
 				}
 				case State::Completed:
 				{
-					fun::Publisher::notify(fun::Event::GoHostGameMenu);
+					fun::Publisher::notify(fun::Event::GoMainMenu);
 					fun::ActivityManager::instance()->unsubscribe_activity(this);
 					break;
 				}
